@@ -191,7 +191,7 @@
     overflow: hidden;
     margin-bottom: var(--space-lg);
     background: var(--surface-2);
-    aspect-ratio: 16/9;
+    aspect-ratio: 4/3;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -200,37 +200,16 @@
 .letter-gif {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
 }
 
+/* Remove the play button overlay */
 .gif-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: var(--transition);
-}
-
-.gif-container:hover .gif-overlay {
-    opacity: 1;
+    display: none;
 }
 
 .play-indicator {
-    width: 60px;
-    height: 60px;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    color: var(--primary);
+    display: none;
 }
 
 .info-sections {
