@@ -1,13 +1,16 @@
 class CanvasManager {
     constructor() {
-        this.canvas = document.getElementById('practice-canvas');
-        this.ctx = this.canvas.getContext('2d');
-        this.isDrawing = false;
-        this.lastX = 0;
-        this.lastY = 0;
-        this.currentLetter = null;
-        
-        this.init();
+        // Wait until the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            this.canvas = document.getElementById('practice-canvas');
+            if (!this.canvas) return; // Safety: exit if canvas not found
+
+            this.ctx = this.canvas.getContext('2d');
+            this.isDrawing = false;
+            this.currentLetter = null;
+
+            this.init();
+        });
     }
 
     init() {
@@ -16,18 +19,14 @@ class CanvasManager {
     }
 
     setupCanvas() {
-        // Set canvas size
         this.resizeCanvas();
-        
-        // Set canvas style
+        this.clear();
+
+        // Set drawing styles
         this.ctx.strokeStyle = '#007AFF';
         this.ctx.lineWidth = 3;
         this.ctx.lineCap = 'round';
         this.ctx.lineJoin = 'round';
-        
-        // Fill with white background
-        this.ctx.fillStyle = '#FFFFFF';
-        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
     setupEventListeners() {
@@ -42,104 +41,100 @@ class CanvasManager {
         this.canvas.addEventListener('touchmove', this.handleTouchMove.bind(this), { passive: false });
         this.canvas.addEventListener('touchend', this.stopDrawing.bind(this));
 
-        // Clear canvas button
-        document.getElementById('clear-canvas').addEventListener('click', this.clear.bind(this));
+        // Clear button
+        const clearBtn = document.getElementById('clear-canvas');
+        if (clearBtn) clearBtn.addEventListener('click', this.clear.bind(this));
 
-        // Window resize
+        // Handle window resize
         window.addEventListener('resize', this.resizeCanvas.bind(this));
+
+        // Handle modal open (in case modal hides canvas)
+        const modal = document.getElementById('modal-overlay');
+        if (modal) {
+            modal.addEventListener('transitionend', () => this.resizeCanvas());
+            modal.addEventListener('animationend', () => this.resizeCanvas());
+        }
     }
 
     resizeCanvas() {
+        if (!this.canvas) return;
+
         const container = this.canvas.parentElement;
         const rect = container.getBoundingClientRect();
-        this.canvas.width = rect.width;
-        this.canvas.height = 200;
+
+        // Fallback width if hidden
+        const width = rect.width || 600;
+        const height = 200;
+
+        this.canvas.width = width;
+        this.canvas.height = height;
+
+        // Reapply styles
+        this.ctx.strokeStyle = '#007AFF';
+        this.ctx.lineWidth = 3;
+        this.ctx.lineCap = 'round';
+        this.ctx.lineJoin = 'round';
+
+        // Clear the canvas
         this.clear();
     }
 
+    getMousePos(e) {
+        const rect = this.canvas.getBoundingClientRect();
+        const scaleX = this.canvas.width / rect.width;
+        const scaleY = this.canvas.height / rect.height;
+
+        if (e.touches && e.touches[0]) {
+            return {
+                x: (e.touches[0].clientX - rect.left) * scaleX,
+                y: (e.touches[0].clientY - rect.top) * scaleY
+            };
+        } else {
+            return {
+                x: (e.clientX - rect.left) * scaleX,
+                y: (e.clientY - rect.top) * scaleY
+            };
+        }
+    }
+
     startDrawing(e) {
+        e.preventDefault();
         this.isDrawing = true;
-        [this.lastX, this.lastY] = this.getCoordinates(e);
-        
-        // Start a new path immediately
+
+        const pos = this.getMousePos(e);
         this.ctx.beginPath();
-        this.ctx.moveTo(this.lastX, this.lastY);
+        this.ctx.moveTo(pos.x, pos.y);
     }
 
     draw(e) {
         if (!this.isDrawing) return;
+        e.preventDefault();
 
-        const [x, y] = this.getCoordinates(e);
-
-        this.ctx.lineTo(x, y);
+        const pos = this.getMousePos(e);
+        this.ctx.lineTo(pos.x, pos.y);
         this.ctx.stroke();
-        
-        // Continue the path
-        this.ctx.beginPath();
-        this.ctx.moveTo(x, y);
-
-        [this.lastX, this.lastY] = [x, y];
     }
 
     stopDrawing() {
         this.isDrawing = false;
-        this.ctx.beginPath(); // Reset the path
+        this.ctx.beginPath();
     }
 
     handleTouchStart(e) {
         e.preventDefault();
-        this.isDrawing = true;
-        const touch = e.touches[0];
-        [this.lastX, this.lastY] = this.getCoordinates(touch);
-        
-        this.ctx.beginPath();
-        this.ctx.moveTo(this.lastX, this.lastY);
+        this.startDrawing(e);
     }
 
     handleTouchMove(e) {
-        if (!this.isDrawing) return;
         e.preventDefault();
-        
-        const touch = e.touches[0];
-        const [x, y] = this.getCoordinates(touch);
-
-        this.ctx.lineTo(x, y);
-        this.ctx.stroke();
-        
-        this.ctx.beginPath();
-        this.ctx.moveTo(x, y);
-
-        [this.lastX, this.lastY] = [x, y];
-    }
-
-    getCoordinates(e) {
-        const rect = this.canvas.getBoundingClientRect();
-        let x, y;
-
-        if (e.clientX !== undefined && e.clientY !== undefined) {
-            // Mouse event or touch event with client coordinates
-            x = e.clientX - rect.left;
-            y = e.clientY - rect.top;
-        } else if (e.offsetX !== undefined && e.offsetY !== undefined) {
-            // Mouse event with offset coordinates
-            x = e.offsetX;
-            y = e.offsetY;
-        } else {
-            // Fallback
-            x = 0;
-            y = 0;
-        }
-
-        // Scale coordinates for high DPI displays
-        const scaleX = this.canvas.width / rect.width;
-        const scaleY = this.canvas.height / rect.height;
-
-        return [x * scaleX, y * scaleY];
+        this.draw(e);
     }
 
     clear() {
+        if (!this.ctx) return;
         this.ctx.fillStyle = '#FFFFFF';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
         this.ctx.strokeStyle = '#007AFF';
         this.ctx.lineWidth = 3;
         this.ctx.lineCap = 'round';
@@ -150,3 +145,6 @@ class CanvasManager {
         this.currentLetter = letter;
     }
 }
+
+// Initialize the class
+new CanvasManager();

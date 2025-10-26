@@ -18,24 +18,22 @@ class NavigationManager {
             });
         });
 
-        // Alphabet card navigation - links to alphabet section
+        // Home logo click
+        const homeLogo = document.getElementById('home-logo');
+        if (homeLogo) {
+            homeLogo.addEventListener('click', () => {
+                this.showSection('instructions');
+            });
+            homeLogo.style.cursor = 'pointer';
+        }
+
+        // Alphabet card navigation
         const alphabetCard = document.getElementById('alphabet-card');
         if (alphabetCard) {
             alphabetCard.addEventListener('click', () => {
                 this.showSection('alphabet');
             });
         }
-
-        // Keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            if (e.altKey) {
-                if (e.key === '1') {
-                    this.showSection('instructions');
-                } else if (e.key === '2') {
-                    this.showSection('alphabet');
-                }
-            }
-        });
     }
 
     showSection(sectionId) {
@@ -60,11 +58,6 @@ class NavigationManager {
             if (activeBtn) {
                 activeBtn.classList.add('active');
             }
-
-            // Dispatch section change event
-            document.dispatchEvent(new CustomEvent('sectionChanged', {
-                detail: { section: sectionId }
-            }));
 
             // Scroll to top
             window.scrollTo(0, 0);

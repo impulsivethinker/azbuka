@@ -1,17 +1,17 @@
 .instructions-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: var(--space-lg);
-    margin-bottom: var(--space-2xl);
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-md);
+    margin-bottom: var(--space-xl);
 }
 
 .instruction-card {
-    padding: var(--space-xl);
+    padding: var(--space-lg);
     border-radius: var(--border-radius-lg);
     transition: var(--transition);
     animation: slideIn 0.6s ease-out;
     cursor: pointer;
-    min-height: 380px;
+    min-height: 320px;
     display: flex;
     flex-direction: column;
 }
@@ -26,12 +26,12 @@
 .instruction-card:nth-child(3) { animation-delay: 0.3s; }
 
 .card-icon {
-    font-size: 2rem;
+    font-size: 1.8rem;
     margin-bottom: var(--space-md);
 }
 
 .instruction-card h3 {
-    font-size: 1.25rem;
+    font-size: 1.2rem;
     font-weight: 600;
     margin-bottom: var(--space-md);
     color: var(--text-primary);
@@ -41,17 +41,19 @@
 .instruction-card ul {
     padding-left: var(--space-md);
     color: var(--text-secondary);
+    font-size: 0.9rem;
 }
 
 .instruction-card li {
-    margin-bottom: var(--space-sm);
-    line-height: 1.5;
+    margin-bottom: var(--space-xs);
+    line-height: 1.4;
 }
 
 .instruction-card p {
     color: var(--text-secondary);
     margin-bottom: var(--space-md);
-    line-height: 1.6;
+    line-height: 1.5;
+    font-size: 0.9rem;
 }
 
 .placeholder-content {
@@ -61,15 +63,15 @@
     justify-content: center;
     flex-grow: 1;
     color: var(--text-secondary);
-    font-size: 1.1rem;
+    font-size: 1rem;
     text-align: center;
-    padding: var(--space-md);
+    padding: var(--space-sm);
 }
 
 .purple-heart {
     color: #BF5AF2;
-    font-size: 2.5rem;
-    margin-top: var(--space-lg);
+    font-size: 2rem;
+    margin-top: var(--space-md);
     animation: pulse 2s infinite;
 }
 
@@ -81,11 +83,19 @@
 @media (max-width: 768px) {
     .instructions-grid {
         grid-template-columns: 1fr;
-        gap: var(--space-md);
+        gap: var(--space-sm);
     }
     
     .instruction-card {
-        padding: var(--space-lg);
-        min-height: 340px;
+        padding: var(--space-md);
+        min-height: 280px;
+    }
+    
+    .card-icon {
+        font-size: 1.6rem;
+    }
+    
+    .instruction-card h3 {
+        font-size: 1.1rem;
     }
 }
