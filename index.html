@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Азбука - Aprende Caligrafía Rusa</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>А</text></svg>">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components/header.css">
+    <link rel="stylesheet" href="css/components/instructions.css">
+    <link rel="stylesheet" href="css/components/alphabet.css">
+    <link rel="stylesheet" href="css/components/canvas.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo" id="home-logo">
+                    <div class="logo-icon">А</div>
+                    <span class="logo-text">Азбука</span>
+                </div>
+                <nav class="navigation">
+                    <button class="nav-btn active" data-section="instructions">
+                        <span class="nav-icon">📚</span>
+                        <span class="nav-text">Instrucciones</span>
+                    </button>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Instructions Section -->
+            <section id="instructions" class="section active">
+                <div class="section-header">
+                    <h1 class="section-title">Ruso facil para Gatitos</h1>
+                    <div class="section-subtitle">Guía para gatitos completos</div>
+                </div>
+                
+                <div class="instructions-grid">
+                    <div class="instruction-card glass" id="alphabet-card">
+                        <div class="card-icon">🐱➡️🔤</div>
+                        <h3>Alfabeto para gatitos</h3>
+                        <p>Explora todas las letras del alfabeto cirílico ruso con demostraciones interactivas de escritura cursiva.</p>
+                        <ul>
+                            <li>Visualiza cada letra en formato impreso y cursivo</li>
+                            <li>Mira GIFs animados mostrando la técnica correcta</li>
+                            <li>Practica trazando las letras en tiempo real</li>
+                            <li>Aprende la pronunciación correcta de cada letra</li>
+                        </ul>
+                        <p><strong>Haz clic aquí para explorar el alfabeto completo</strong></p>
+                    </div>
+
+                    <div class="instruction-card glass">
+                        <div class="card-icon">💡</div>
+                        <h3>Tu Idea Aquí</h3>
+                        <div class="placeholder-content">
+                            <p>Espacio reservado para tu próxima gran idea</p>
+                            <div class="purple-heart">💜</div>
+                        </div>
+                    </div>
+
+                    <div class="instruction-card glass">
+                        <div class="card-icon">💡</div>
+                        <h3>Tu Idea Aquí</h3>
+                        <div class="placeholder-content">
+                            <p>Espacio reservado para tu próxima gran idea</p>
+                            <div class="purple-heart">💜</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Alphabet Section -->
+            <section id="alphabet" class="section">
+                <div class="section-header">
+                    <h1 class="section-title">Alfabeto Ruso</h1>
+                    <div class="section-subtitle">Selecciona una letra para aprender</div>
+                </div>
+                
+                <!-- Filter Buttons -->
+                <div class="filter-container">
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-filter="all">
+                            <span>Todas</span>
+                        </button>
+                        <button class="filter-btn" data-filter="vowels">
+                            <span>Vocales</span>
+                        </button>
+                        <button class="filter-btn" data-filter="consonants">
+                            <span>Consonantes</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Alphabet Grid -->
+                <div class="alphabet-grid" id="alphabet-grid">
+                    <!-- Letters populated by JavaScript -->
+                </div>
+                
+                <!-- Letter Detail Modal -->
+                <div class="modal-overlay" id="modal-overlay">
+                    <div class="modal-content glass">
+                        <div class="modal-header">
+                            <div class="letter-display">
+                                <span class="letter-print" id="detail-print">А</span>
+                                <span class="letter-cursive" id="detail-cursive">а</span>
+                                <div class="letter-info">
+                                    <h3 id="detail-name">A /a/</h3>
+                                    <div class="letter-type" id="detail-type">Vocal</div>
+                                </div>
+                            </div>
+                            <button class="close-btn" id="close-modal">
+                                <span>×</span>
+                            </button>
+                        </div>
+                        
+                        <div class="modal-body">
+                            <div class="gif-container">
+                                <img src="assets/gifs/placeholder.gif" alt="Demonstración de escritura" class="letter-gif" id="letter-gif">
+                                <div class="gif-overlay">
+                                    <div class="play-indicator">▶</div>
+                                </div>
+                            </div>
+                            
+                            <div class="info-sections">
+                                <div class="info-section">
+                                    <h4>Información</h4>
+                                    <p id="letter-info-text">Esta es la letra A en ruso. Se pronuncia como /a/ en español.</p>
+                                </div>
+                                
+                                <div class="info-section">
+                                    <h4>Consejos de Escritura</h4>
+                                    <p id="letter-tips">Comienza desde la parte superior, traza una curva hacia la derecha y luego desciende con un trazo recto.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="practice-section">
+                                <div class="practice-header">
+                                    <h4>Área de Práctica</h4>
+                                    <div class="practice-controls">
+                                        <button class="control-btn" id="clear-canvas">
+                                            <span>🔄</span>
+                                            Limpiar
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="canvas-container">
+                                    <canvas id="practice-canvas"></canvas>
+                                    <div class="canvas-guide" id="canvas-guide"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/alphabet.js"></script>
+    <script src="js/canvas.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
